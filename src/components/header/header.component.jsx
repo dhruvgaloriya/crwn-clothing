@@ -1,50 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { auth } from '../../firebase/firebase.utils';
-import { ReactComponent as Logo } from '../../assets/crown.svg';
-import './header.styles.scss';
-import { connect } from 'react-redux';
-import CartIcon from '../cart-icon/cart-icon.component';
-import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import React from "react";
+import { auth } from "../../firebase/firebase.utils";
+import { ReactComponent as Logo } from "../../assets/crown.svg";
+import { connect } from "react-redux";
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+import {
+  HeaderContainer,
+  OptionsContainer,
+  LogoContainer,
+  OptionLink,
+} from "./header.styles";
 
 const Header = ({ currentUser, hidden }) => (
-  <div className='header'>
-    <Link className='logo-container' to='/'>
-      <Logo className='logo' />
-    </Link>
-    <div className='options'>
-      {
-        currentUser ? (
-          <span className="option">
-            WELCOME <b>{currentUser.displayName}</b>
-          </span>
-        ):null   
-      }
-      
-      <Link className='option' to='/shop'>
-        SHOP
-      </Link>
-      <Link className='option' to='/shop'>
-        CONTACT
-      </Link>
+  <HeaderContainer>
+    <LogoContainer to="/">
+      <Logo />
+    </LogoContainer>
+    <OptionsContainer>
       {currentUser ? (
-        <div className='option' onClick={() => auth.signOut()}>
+        <OptionLink as="span">
+          WELCOME <b>{currentUser.displayName}</b>
+        </OptionLink>
+      ) : null}
+
+      <OptionLink to="/shop">SHOP</OptionLink>
+      <OptionLink to="/shop">CONTACT</OptionLink>
+      {currentUser ? (
+        <OptionLink as="div" onClick={() => auth.signOut()}>
           SIGN OUT
-        </div>
+        </OptionLink>
       ) : (
-        <Link className='option' to='/sign-in'>
-          SIGN IN
-        </Link>
+        <OptionLink to="/sign-in">SIGN IN</OptionLink>
       )}
-      <CartIcon/>
-    </div>
-    {!hidden ? <CartDropdown/> : null}
-  </div>
+      <CartIcon />
+    </OptionsContainer>
+    {!hidden ? <CartDropdown /> : null}
+  </HeaderContainer>
 );
 
-const mapStateToProps = ({user:{currentUser}, cart:{hidden}}) => ({
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
   currentUser,
-  hidden
-})
+  hidden,
+});
 
 export default connect(mapStateToProps)(Header);
