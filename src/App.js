@@ -10,13 +10,12 @@ import { createStructuredSelector } from "reselect";
 import { setCurrentUser, checkUserSession } from "./redux/user/user.action";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCurrentUser } from "./redux/user/user.selector";
-const App = ({ currentUser, checkUserSession }) => {
-	//unsubscribeFromAuth = null;
 
+const App = ({ currentUser, checkUserSession }) => {
 	useEffect(() => {
 		checkUserSession();
 		return () => {
-			console.log("cleanup function");
+			console.log("cleanup function	");
 		};
 	}, [checkUserSession]);
 	return (
