@@ -1,30 +1,32 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import CollectionItem from "../collection-item/collection-item.component";
 import {
-  CollectionPreviewContainer,
-  TitleContainer,
-  PreviewContainer,
+	CollectionPreviewContainer,
+	TitleContainer,
+	PreviewContainer,
 } from "./collection-preview.styles";
 
-const CollectionPreview = ({ title, items, history, match, routeName }) => {
-  return (
-    <CollectionPreviewContainer>
-      <TitleContainer
-        onClick={() => history.push(`${match.path}/${routeName}`)}
-      >
-        {title.toUpperCase()}
-      </TitleContainer>
+const CollectionPreview = ({ title, items, routeName }) => {
+	const history = useHistory();
+	const match = useRouteMatch();
+	return (
+		<CollectionPreviewContainer>
+			<TitleContainer
+				onClick={() => history.push(`${match.path}/${routeName}`)}
+			>
+				{title.toUpperCase()}
+			</TitleContainer>
 
-      <PreviewContainer>
-        {items
-          .filter((item, index) => index < 4)
-          .map((item) => (
-            <CollectionItem key={item.id} item={item} />
-          ))}
-      </PreviewContainer>
-    </CollectionPreviewContainer>
-  );
+			<PreviewContainer>
+				{items
+					.filter((item, index) => index < 4)
+					.map((item) => (
+						<CollectionItem key={item.id} item={item} />
+					))}
+			</PreviewContainer>
+		</CollectionPreviewContainer>
+	);
 };
 
-export default withRouter(CollectionPreview);
+export default CollectionPreview;
