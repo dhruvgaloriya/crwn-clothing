@@ -4,20 +4,22 @@ import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import "./App.css";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { setCurrentUser, checkUserSession } from "./redux/user/user.action";
+import { useDispatch, useSelector } from "react-redux";
+import { checkUserSession } from "./redux/user/user.action";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCurrentUser } from "./redux/user/user.selector";
+import "./App.css";
 
-const App = ({ currentUser, checkUserSession }) => {
+const App = () => {
+	const currentUser = useSelector(selectCurrentUser);
+	const dispatch = useDispatch();
+
 	useEffect(() => {
-		checkUserSession();
+		dispatch(checkUserSession());
 		return () => {
 			console.log("cleanup function	");
 		};
-	}, [checkUserSession]);
+	}, [dispatch]);
 	return (
 		<>
 			<Header />
@@ -40,13 +42,4 @@ const App = ({ currentUser, checkUserSession }) => {
 	);
 };
 
-const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-	checkUserSession: () => dispatch(checkUserSession()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
